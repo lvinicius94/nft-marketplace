@@ -49,7 +49,7 @@ As senhas ficam no mock apenas como hash SHA-256 com salt; nunca em texto puro. 
 | `npm run preview` | Serve o build em http://localhost:4173 |
 | `npm run typecheck` | Verificação de tipos |
 | `npm run lint` | ESLint |
-| `npm run test:e2e` | Playwright (Chromium, desktop 1440px e mobile 390px). Faz o build e sobe o preview sozinho |
+| `npm run test:e2e` | Playwright (Chromium: desktop 1440px, mobile 390px e tablet 768px). Faz o build e sobe o preview sozinho |
 | `npm run test:e2e:update` | Regenera as baselines de regressão visual |
 | `npm run test:e2e:report` | Abre o relatório HTML (traces das falhas em `test-results/`) |
 | `npm run lighthouse` | Auditoria: início e detalhe, mobile e desktop, 3 execuções, mediana. Exige `npm run preview` rodando |
@@ -99,7 +99,7 @@ Os cenários são determinísticos (dados com semente fixa e latência pseudoale
 
 ## Testes E2E
 
-São 40 testes por viewport, cobrindo os 12 grupos do enunciado. Todos rodam contra o build de produção com MSW. Cada teste começa num contexto isolado: `localStorage` limpo e banco simulado recém-semeado.
+São 90 testes: 41 no desktop, 41 no mobile (3 pulados por serem de teclado físico ou exclusivos do desktop) e 11 no tablet (overflow, busca e filtros, compra completa e regressão visual). Eles cobrem os 12 grupos do enunciado. Todos rodam contra o build de produção com MSW. Cada teste começa num contexto isolado: `localStorage` limpo e banco simulado recém-semeado. Latência, disparo de eventos (via `window.__mocks`) e relógio (`page.clock`, nos testes de expiração de sessão e de pedido pendente) são controlados. O carrossel roda com `reducedMotion` para ser determinístico.
 
 - `e2e/catalog.spec.ts`: busca, filtros combinados, ordenação, paginação, histórico, vazio, URL inválida, skeleton lento, falha + retry, respostas fora de ordem
 - `e2e/detail-favorites.spec.ts`: acesso direto, 404, edição indisponível, limite de quantidade, favoritos persistentes, falha com rollback
@@ -109,4 +109,4 @@ São 40 testes por viewport, cobrindo os 12 grupos do enunciado. Todos rodam con
 - `e2e/account-a11y.spec.ts`: perfil, avatar, senha, carteiras; teclado, foco em diálogos, erros associados, overflow horizontal
 - `e2e/visual.spec.ts`: regressão visual de início, detalhe, carrinho e pagamento (baselines em `e2e/__screenshots__`)
 
-As baselines visuais foram geradas no Windows com Chromium. Em outro sistema operacional, as diferenças de renderização de fonte exigem `npm run test:e2e:update`.
+As baselines visuais ficam em `e2e/__screenshots__/<sistema>/` e as versionadas foram geradas no Windows (`win32`). Como a renderização de fontes muda entre sistemas, no primeiro run em macOS ou Linux o Playwright grava as baselines que faltarem (`updateSnapshots: 'missing'`) em vez de falhar, e os runs seguintes comparam com elas.

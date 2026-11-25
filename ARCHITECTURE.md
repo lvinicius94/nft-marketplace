@@ -128,14 +128,14 @@ Resultado completo em [`lighthouse/summary.md`](./lighthouse/summary.md). Config
 
 | Página | Perfil | Perf. | A11y | BP | SEO | LCP | CLS | TBT |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Início | mobile | 93 | 100 | 100 | 100 | 3,18 s | 0,021 | 54 ms |
-| Início | desktop | 100 | 100 | 100 | 100 | 0,72 s | 0,002 | 0 ms |
-| Detalhe | mobile | 94 | 100 | 100 | 100 | 3,13 s | 0 | 7 ms |
-| Detalhe | desktop | 100 | 100 | 100 | 100 | 0,71 s | 0 | 0 ms |
+| Início | mobile | 93 | 100 | 100 | 100 | 3,26 s | 0,031 | 37 ms |
+| Início | desktop | 100 | 100 | 100 | 100 | 0,74 s | 0,006 | 0 ms |
+| Detalhe | mobile | 94 | 100 | 100 | 100 | 3,11 s | 0 | 5 ms |
+| Detalhe | desktop | 100 | 100 | 100 | 100 | 0,73 s | 0 | 0 ms |
 
 Medidas aplicadas: rotas com code splitting; MSW num chunk carregado em paralelo via `modulepreload`, para não criar uma cascata de downloads antes da primeira renderização; imagens WebP em 400 e 800 px com `width`/`height` e `fetchpriority` na imagem do LCP, com preload responsivo no `index.html`; fonte Roboto Mono variável servida localmente; altura mínima no `main` contra deslocamento do rodapé (corrigiu o CLS de 0,17 no detalhe).
 
-O LCP mobile de cerca de 3,1 s vem principalmente da exigência de os mocks estarem ativos no build auditado: a primeira renderização espera o `worker.start()` do MSW, cerca de 100 KB gzip. Sem mocks, esse custo não existiria. Não houve simplificações exclusivas para a auditoria.
+O LCP mobile de cerca de 3,1–3,3 s vem principalmente da exigência de os mocks estarem ativos no build auditado: a primeira renderização espera o `worker.start()` do MSW, cerca de 100 KB gzip. Sem mocks, esse custo não existiria. Não houve simplificações exclusivas para a auditoria.
 
 ## Decisões de UX e desvios do Figma
 
