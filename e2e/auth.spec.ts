@@ -47,6 +47,17 @@ test.describe('Conta e sessão', () => {
     await expect(page.getByText('Sua sessão expirou. Entre novamente para continuar de onde parou.')).toBeVisible()
   })
 
+  test('sessão expira pelo relógio (clock controlado do Playwright)', async ({ page }) => {
+    await page.clock.install()
+    await login(page)
+    await page.goto('/perfil')
+    await expect(page.getByLabel('Nome de usuário')).toHaveValue(USERS.ana.username)
+    // Sessions last 1h in the test scenario; jump past it without waiting.
+    await page.clock.fastForward('01:01:00')
+    await page.getByRole('link', { name: 'Carteiras' }).click()
+    await expect(page).toHaveURL(/\/entrar\?redirect=%2Fperfil%2Fcarteiras/)
+  })
+
   test('expiração no checkout preserva o contexto para retomada', async ({ page, mocks }) => {
     await login(page)
     await addToCart(page)

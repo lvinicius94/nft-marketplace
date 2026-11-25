@@ -43,6 +43,7 @@ test.describe('Tempo real (Socket.IO via MSW)', () => {
   })
 
   test('desconexão com pedido pendente: retomada após reconectar e após recarregar', async ({ page, mocks }) => {
+    await page.clock.install()
     await login(page)
     await mocks.setScenario('default') // 2.5s settlement window
     await addToCart(page)
@@ -53,8 +54,8 @@ test.describe('Tempo real (Socket.IO via MSW)', () => {
     await expect(page.getByTestId('order-pending')).toBeVisible()
     await expect(page.getByText(/Reconectando|indisponíveis/)).toBeVisible()
 
-    // The order settles while the socket is down; the event is lost.
-    await page.waitForTimeout(3000)
+    // The order settles (2.5s timer) while the socket is down; the event is lost.
+    await page.clock.runFor(3000)
     await expect(page.getByTestId('order-pending')).toBeVisible()
 
     // Reconnect -> REST reconciliation brings the terminal state.

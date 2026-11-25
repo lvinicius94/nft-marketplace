@@ -18,7 +18,10 @@ export default defineConfig({
     toHaveScreenshot: { maxDiffPixelRatio: 0.02, animations: 'disabled', caret: 'hide' },
   },
   reporter: [['html', { open: 'never' }], ['list']],
-  snapshotPathTemplate: '{testDir}/__screenshots__/{projectName}/{testFilePath}/{arg}{ext}',
+  // Baselines are per OS (font rendering differs). Missing ones (e.g. first run on macOS/Linux)
+  // are written instead of failing; versioned baselines here were generated on win32.
+  snapshotPathTemplate: '{testDir}/__screenshots__/{platform}/{projectName}/{testFilePath}/{arg}{ext}',
+  updateSnapshots: 'missing',
   use: {
     baseURL: `http://localhost:${PORT}`,
     trace: 'retain-on-failure',
@@ -32,6 +35,12 @@ export default defineConfig({
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
     { name: 'mobile', use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
+    {
+      // Tablet breakpoint required by the challenge: layout, purchase flow and visual regression.
+      name: 'tablet',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 768, height: 1024 } },
+      grep: /sem overflow horizontal|compra completa|Regressão visual|busca, filtros/,
+    },
   ],
   webServer: {
     command: `npm run build && npx vite preview --port ${PORT} --strictPort`,

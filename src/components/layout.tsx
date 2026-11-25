@@ -167,9 +167,9 @@ export function Footer() {
   ]
   return (
     <footer className="container-page mb-24 mt-24 md:mb-6">
-      <section aria-label="Destaques" className="grid gap-8 bg-surface px-6 py-8 md:grid-cols-[1fr_1fr_1fr_1.3fr] md:px-12">
+      <section aria-label="Destaques" className="grid gap-8 bg-surface px-6 py-8 md:grid-cols-3 md:px-8 lg:grid-cols-[1fr_1fr_1fr_1.3fr] lg:px-12">
         {features.map((f) => (
-          <div key={f.title} className="md:border-r md:border-accent md:pr-6">
+          <div key={f.title} className="min-w-0 md:border-r md:border-accent md:pr-6 md:last-of-type:border-r-0 lg:last-of-type:border-r">
             <div aria-hidden="true" className="mb-4 grid size-[74px] place-items-center rounded-full bg-accent text-2xl font-bold text-ink">
               <f.Icon className="size-8" strokeWidth={1.75} />
             </div>
@@ -178,7 +178,7 @@ export function Footer() {
           </div>
         ))}
         <form
-          className="grid content-start gap-3"
+          className="grid min-w-0 content-start gap-3 md:col-span-3 lg:col-span-1"
           onSubmit={(e) => {
             e.preventDefault()
             comingSoon('A newsletter')()
