@@ -62,7 +62,7 @@ interface QuoteRecord {
   fingerprint: string
 }
 interface DbState {
-  schema: 2
+  schema: 3
   users: UserRecord[]
   sessions: SessionRecord[]
   nfts: NftDetail[]
@@ -122,7 +122,7 @@ function seed(): DbState {
     },
   ]
   return {
-    schema: 2,
+    schema: 3,
     users,
     sessions: [],
     nfts: buildNftFixtures(),
@@ -148,7 +148,7 @@ function load(): DbState {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) {
       const parsed = JSON.parse(raw) as DbState
-      if (parsed.schema === 2) return parsed
+      if (parsed.schema === 3) return parsed
     }
   } catch {
     /* corrupted or unavailable storage: reseed */
