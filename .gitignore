@@ -13,3 +13,4 @@ playwright/.cache
 design/hi
 design/frames/*.zip
 lighthouse/tmp
+design/
