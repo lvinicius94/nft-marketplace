@@ -23,7 +23,7 @@ export function RootLayout() {
       </a>
       <ConnectionBanner />
       <Header />
-      <main id="conteudo" tabIndex={-1} className="focus:outline-none">
+      <main id="conteudo" tabIndex={-1} className="min-h-[100dvh] focus:outline-none">
         <Outlet />
       </main>
       <Footer />

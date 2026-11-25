@@ -125,7 +125,7 @@ function PurchasePanel({ nft }: { nft: NftDetail }) {
                 className={cn(
                   'rounded-full border px-2.5 py-0.5 text-xs',
                   selected ? 'border-accent-strong text-cream' : 'border-line text-muted',
-                  disabled && 'line-through opacity-60',
+                  disabled && 'border-dashed line-through',
                 )}
               >
                 {e.name}

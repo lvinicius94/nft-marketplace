@@ -88,7 +88,7 @@ function Hero() {
 
 function HeroDots({ index, onChange, className }: { index: number; onChange: (i: number) => void; className?: string }) {
   return (
-    <div className={cn('flex gap-2', className)} role="group" aria-label="Escolher destaque">
+    <div className={cn('flex gap-0.5', className)} role="group" aria-label="Escolher destaque">
       {HERO_SLIDES.map((s, i) => (
         <button
           key={s.kicker}
@@ -96,8 +96,10 @@ function HeroDots({ index, onChange, className }: { index: number; onChange: (i:
           onClick={() => onChange(i)}
           aria-label={`Destaque ${i + 1} de ${HERO_SLIDES.length}`}
           aria-current={i === index}
-          className={cn('size-2.5 rounded-full border border-accent', i === index ? 'bg-accent' : 'bg-accent/60')}
-        />
+          className="grid size-6 place-items-center rounded-full"
+        >
+          <span aria-hidden="true" className={cn('size-2.5 rounded-full border border-accent', i === index ? 'bg-accent' : 'bg-accent/60')} />
+        </button>
       ))}
     </div>
   )

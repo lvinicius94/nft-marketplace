@@ -8,10 +8,14 @@ import { createAppRouter } from '@/router'
 import { RealtimeProvider } from '@/realtime/provider'
 import { SessionSync } from '@/auth/session-sync'
 
-/** Mocks are enabled by configuration (VITE_ENABLE_MOCKS), including in the demo build. */
+import { startMocks } from '@/mocks/browser'
+
+/**
+ * Mocks are enabled by configuration (VITE_ENABLE_MOCKS), including in the demo build.
+ * Imported statically so the MSW chunk downloads in parallel with the app (no waterfall).
+ */
 async function enableMocks() {
   if (import.meta.env.VITE_ENABLE_MOCKS === 'false') return
-  const { startMocks } = await import('@/mocks/browser')
   await startMocks()
 }
 
