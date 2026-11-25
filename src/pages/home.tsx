@@ -25,9 +25,18 @@ const SORT_LABEL: Record<NftSort, string> = {
 }
 
 const HERO_SLIDES = [
-  { kicker: 'Bem-vindo à Kurio', title: ['SEJA DONO DO FUTURO', 'DA ARTE DIGITAL'], text: 'Descubra NFTs selecionados de criadores emergentes e consagrados. Colecione arte digital rara, apoie artistas e tenha uma parte da cultura da internet.', image: '/nfts/emerald-ape-800.webp', alt: 'Emerald Ape #042, macaco ilustrado de óculos e jaqueta verde' },
-  { kicker: 'Edições limitadas', title: ['LANÇAMENTOS', 'GÊNESIS 1/50'], text: 'Colecione edições escassas diretamente dos criadores antes da revelação pública, com procedência verificada na rede.', image: '/nfts/golden-beat-800.webp', alt: 'Golden Beat, macaco ilustrado de fones de ouvido' },
-  { kicker: 'Coleções verificadas', title: ['ARTE DIGITAL', 'SELECIONADA'], text: 'Explore novos artistas, coleções verificadas e obras digitais que definem a cultura da rede.', image: '/nfts/neon-vessel-800.webp', alt: 'Neon Vessel, macaco ilustrado de blazer creme' },
+  {
+    kicker: 'Black Friday Kurio',
+    title: ['SUA PRIMEIRA NFT', 'COM 15% OFF'],
+    text: 'Golden Snub #001 é lendário e saiu do ateliê do criador da Kurio. Use o cupom LucasCamargo no carrinho e leve sua primeira NFT com 15% de desconto.',
+    image: '/nfts/golden-snub-800.webp',
+    alt: 'Golden Snub #001, macaco dourado ilustrado de moletom verde',
+    to: '/nft/nft-golden-snub',
+    cta: 'QUERO O MEU',
+  },
+  { kicker: 'Bem-vindo à Kurio', title: ['SEJA DONO DO FUTURO', 'DA ARTE DIGITAL'], text: 'Descubra NFTs selecionados de criadores emergentes e consagrados. Colecione arte digital rara, apoie artistas e tenha uma parte da cultura da internet.', image: '/nfts/emerald-ape-800.webp', alt: 'Emerald Ape #042, macaco ilustrado de óculos e jaqueta verde', to: '/#catalogo', cta: 'EXPLORAR' },
+  { kicker: 'Edições limitadas', title: ['LANÇAMENTOS', 'GÊNESIS 1/50'], text: 'Colecione edições escassas diretamente dos criadores antes da revelação pública, com procedência verificada na rede.', image: '/nfts/golden-beat-800.webp', alt: 'Golden Beat, macaco ilustrado de fones de ouvido', to: '/#catalogo', cta: 'EXPLORAR' },
+  { kicker: 'Coleções verificadas', title: ['ARTE DIGITAL', 'SELECIONADA'], text: 'Explore novos artistas, coleções verificadas e obras digitais que definem a cultura da rede.', image: '/nfts/neon-vessel-800.webp', alt: 'Neon Vessel, macaco ilustrado de blazer creme', to: '/#catalogo', cta: 'EXPLORAR' },
 ]
 
 function useCatalogSearch() {
@@ -72,11 +81,11 @@ function Hero() {
   // slides (the cell is as tall as the tallest slide) and a smooth transition.
   const fade = (i: number) =>
     cn(
-      '[grid-area:1/1] transition-[opacity,transform] duration-700 ease-out',
-      i === index ? 'opacity-100 translate-y-0' : 'pointer-events-none opacity-0 translate-y-2',
+      '[grid-area:1/1] transition-opacity duration-1000 ease-in-out',
+      i === index ? 'opacity-100' : 'pointer-events-none opacity-0',
     )
   const imgFade = (i: number) =>
-    cn('[grid-area:1/1] transition-[opacity,transform] duration-700 ease-out', i === index ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]')
+    cn('[grid-area:1/1] transition-opacity duration-1000 ease-in-out', i === index ? 'opacity-100' : 'opacity-0')
 
   return (
     <section
@@ -108,12 +117,12 @@ function Hero() {
                     {sl.title[1]}
                   </p>
                 )}
-                <p className="mt-2 max-w-xl text-sm leading-6 text-muted">{sl.text}</p>
+                <p className="mt-2 max-w-xl text-sm leading-6 text-muted">{highlightCoupon(sl.text)}</p>
               </div>
             ))}
           </div>
-          <Button asChild className="mt-8 h-10 w-[140px] text-base">
-            <a href="#catalogo">EXPLORAR</a>
+          <Button asChild className="mt-8 h-10 min-w-[140px] text-base">
+            <HeroCta slide={HERO_SLIDES[index]} />
           </Button>
           <HeroDots index={index} onChange={setIndex} className="mt-12 justify-end" />
         </div>
@@ -153,13 +162,13 @@ function Hero() {
                       {sl.title[1]}
                     </p>
                   )}
-                  <p className="mt-1 line-clamp-3 text-[11px] leading-4 text-cream/80">{sl.text}</p>
+                  <p className="mt-1 line-clamp-3 text-[11px] leading-4 text-cream/80">{highlightCoupon(sl.text)}</p>
                 </div>
               ))}
             </div>
-            <a href="#catalogo" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-accent-strong">
-              EXPLORAR <ArrowRight className="size-3" aria-hidden="true" />
-            </a>
+            <HeroCta slide={HERO_SLIDES[index]} className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-accent-strong">
+              {HERO_SLIDES[index].cta} <ArrowRight className="size-3" aria-hidden="true" />
+            </HeroCta>
           </div>
           <div className="grid overflow-hidden rounded-xl">
             {HERO_SLIDES.map((sl, i) => (
@@ -179,6 +188,35 @@ function Hero() {
         <HeroDots index={index} onChange={setIndex} className="mt-3 justify-center" />
       </div>
     </section>
+  )
+}
+
+/** Emphasizes the coupon code inside the promo copy. */
+function highlightCoupon(text: string) {
+  const [before, after] = text.split('LucasCamargo')
+  if (after === undefined) return text
+  return (
+    <>
+      {before}
+      <strong className="font-bold text-accent-strong">LucasCamargo</strong>
+      {after}
+    </>
+  )
+}
+
+/** Promo slides go to the product; the others scroll to the catalog. */
+function HeroCta({ slide, className, children }: { slide: (typeof HERO_SLIDES)[number]; className?: string; children?: React.ReactNode }) {
+  if (slide.to.startsWith('/nft/')) {
+    return (
+      <Link to="/nft/$nftId" params={{ nftId: slide.to.split('/').pop()! }} className={className}>
+        {children ?? slide.cta}
+      </Link>
+    )
+  }
+  return (
+    <a href="#catalogo" className={className}>
+      {children ?? slide.cta}
+    </a>
   )
 }
 

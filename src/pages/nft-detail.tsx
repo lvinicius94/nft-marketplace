@@ -271,8 +271,16 @@ export function NftDetailPage() {
           <div>
             <h1 className="text-2xl font-bold md:text-[28px]">{nft.name}</h1>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
-              <p className="text-xl font-bold text-accent-strong" data-testid="detail-price">
-                {eth(nft.priceEth)}
+              <p className="flex items-baseline gap-2">
+                <span className="text-xl font-bold text-accent-strong" data-testid="detail-price">
+                  {eth(nft.priceEth)}
+                </span>
+                {nft.compareAtPriceEth && (
+                  <span className="text-sm text-strike line-through">
+                    <span className="sr-only">preço anterior </span>
+                    {eth(nft.compareAtPriceEth)}
+                  </span>
+                )}
               </p>
               <Stars rating={nft.rating} reviews={nft.reviewsCount} />
             </div>

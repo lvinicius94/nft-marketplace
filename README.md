@@ -38,7 +38,7 @@ Veja `.env.example`. Nenhuma é obrigatória.
 | Ana Prado | `ana@greenmint.test` | `Colecionador@1` | Tem 2 carteiras (Ethereum e Polygon) e favoritos |
 | Bruno Lima | `bruno@greenmint.test` | `Colecionador@2` | Sem carteiras: bom para testar o cadastro de carteiras |
 
-As senhas ficam no mock apenas como hash SHA-256 com salt; nunca em texto puro. Cupons: `GREEN10` (10%), `BEMVINDO5` (5%), `LucasCamargo` (15%, assinatura do autor) e `BLACK30` (expirado). Os códigos não diferenciam maiúsculas de minúsculas.
+As senhas ficam no mock apenas como hash SHA-256 com salt; nunca em texto puro. Cupons: `GREEN10` (10%), `BEMVINDO5` (5%), `LucasCamargo` (15%, promoção de Black Friday do primeiro slide, que leva ao NFT lendário Golden Snub #001) e `BLACK30` (expirado). Os códigos não diferenciam maiúsculas de minúsculas.
 
 ## Comandos
 

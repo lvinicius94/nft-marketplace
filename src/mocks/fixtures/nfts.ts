@@ -6,7 +6,7 @@ import { mulberry32 } from '../random'
  * Deterministic catalog fixtures (fixed seed) so tests, visual baselines and Lighthouse
  * always see the same data. Names and art follow the Figma layout.
  */
-type Art = 'emerald-ape' | 'sage-nomad' | 'neon-vessel' | 'golden-beat'
+type Art = 'emerald-ape' | 'sage-nomad' | 'neon-vessel' | 'golden-beat' | 'golden-snub'
 
 const SERIES: { name: string; art: Art; collection: string }[] = [
   { name: 'Emerald Ape', art: 'emerald-ape', collection: 'Kurio Apes' },
@@ -66,6 +66,10 @@ function randomPrice(rand: () => number): string {
 }
 
 export function buildNftFixtures(): NftDetail[] {
+  return [...buildGenerated(), buildGoldenSnub()]
+}
+
+function buildGenerated(): NftDetail[] {
   const rand = mulberry32(42)
   return Array.from({ length: NFT_COUNT }, (_, i) => {
     const figma = FIGMA_ITEMS[i]
@@ -125,4 +129,52 @@ export function buildNftFixtures(): NftDetail[] {
       tokenStandard: 'ERC-721',
     }
   })
+}
+
+/** Black Friday highlight (first hero slide): the author's own legendary piece. */
+export const GOLDEN_SNUB_ID = 'nft-golden-snub'
+
+function buildGoldenSnub(): NftDetail {
+  const id = GOLDEN_SNUB_ID
+  const editions: Edition[] = [
+    { id: `${id}-1-1`, name: '1/1', priceEth: '4.95', available: 1, maxPerOrder: 1, onSale: true },
+    { id: `${id}-1-10`, name: '1/10', priceEth: '1.98', available: 10, maxPerOrder: 2, onSale: true },
+    { id: `${id}-1-50`, name: '1/50', priceEth: '0.99', available: 50, maxPerOrder: 5, onSale: true },
+    { id: `${id}-aberta`, name: 'ABERTA', priceEth: '0.99', available: 999, maxPerOrder: 20, onSale: false },
+  ]
+  return {
+    id,
+    tokenId: '#0001',
+    name: 'Golden Snub #001',
+    collection: 'Kurio Originals',
+    creator: 'Lucas Camargo',
+    image: artUrl('golden-snub', 400),
+    images: [artUrl('golden-snub'), artUrl('golden-beat'), artUrl('emerald-ape'), artUrl('sage-nomad')],
+    category: 'colecionaveis',
+    rarity: 'lendario',
+    chain: 'ethereum',
+    priceEth: '0.99',
+    compareAtPriceEth: '1.49',
+    available: 61,
+    rating: 5,
+    reviewsCount: 3,
+    // Oldest listing: stays out of the first catalog page, so the catalog keeps the layout order.
+    createdAt: new Date(Date.UTC(2026, 8, 1)).toISOString(),
+    version: 1,
+    description:
+      'Um macaco-dourado-de-nariz-arrebitado de moletom verde, pintado à mão pelo criador da Kurio. Peça lendária da coleção Kurio Originals, verificada na Ethereum, em edição especial de Black Friday.',
+    attributes: [
+      { label: 'Acessório', value: 'Moletom' },
+      { label: 'Cor', value: 'Dourado' },
+      { label: 'Raridade', value: 'Lendário' },
+    ],
+    editions,
+    reviews: [
+      { id: `${id}-r0`, author: 'Ana P.', rating: 5, comment: 'Expressão impagável. Melhor compra da Black Friday.', createdAt: new Date(Date.UTC(2026, 10, 20)).toISOString() },
+      { id: `${id}-r1`, author: 'Diego R.', rating: 5, comment: 'O cupom do criador ainda deixou mais barato.', createdAt: new Date(Date.UTC(2026, 10, 21)).toISOString() },
+      { id: `${id}-r2`, author: 'Elisa T.', rating: 5, comment: 'Textura do pelo incrível em alta resolução.', createdAt: new Date(Date.UTC(2026, 10, 22)).toISOString() },
+    ],
+    contract: '0x7A42a11ce0000000000000000000000000000001',
+    tokenStandard: 'ERC-721',
+  }
 }

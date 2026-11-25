@@ -46,6 +46,21 @@ test.describe('Carrinho', () => {
     await expect(page.getByTestId('summary-total')).toHaveText('1.0275 ETH')
   })
 
+  test('promoção Black Friday: do carrossel ao NFT lendário com o cupom do criador', async ({ page }) => {
+    await gotoApp(page, '/')
+    const hero = page.getByRole('region', { name: 'Destaques' })
+    await expect(hero.getByRole('heading', { level: 1 }).first()).toContainText('SUA PRIMEIRA NFT')
+    await hero.getByRole('link', { name: /QUERO O MEU/ }).first().click()
+    await expect(page).toHaveURL(/\/nft\/nft-golden-snub$/)
+    await expect(page.getByRole('heading', { level: 1, name: 'Golden Snub #001' })).toBeVisible()
+    await expect(page.getByRole('definition').filter({ hasText: 'Lendário' }).first()).toBeVisible()
+    await page.getByRole('button', { name: 'COMPRAR', exact: true }).click()
+    await page.getByLabel('Código promocional').fill('lucascamargo')
+    await page.getByRole('button', { name: 'Aplicar' }).click()
+    await expect(page.getByTestId('summary-subtotal')).toHaveText('0.99 ETH')
+    await expect(page.getByTestId('summary-discount')).toHaveText('(-) 0.1485 ETH')
+  })
+
   test('valores em ETH mantêm precisão decimal', async ({ page }) => {
     await addToCart(page, 'nft-009', 3) // 0.39 * 3 = 1.17 (float would give 1.1700000000000002)
     await expect(page.getByTestId('summary-subtotal')).toHaveText('1.17 ETH')
