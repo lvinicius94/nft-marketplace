@@ -41,21 +41,63 @@ function useCatalogSearch() {
   return { search, update }
 }
 
+const AUTOPLAY_MS = 2000
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onChange = () => setReduced(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return reduced
+}
+
 function Hero() {
   const [index, setIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const reducedMotion = usePrefersReducedMotion()
   const slide = HERO_SLIDES[index]
+
+  // Auto-advance every 2s; a manual choice restarts the timer. Pauses on hover/focus and
+  // never moves for users who prefer reduced motion (WCAG 2.2.2).
+  useEffect(() => {
+    if (paused || reducedMotion) return
+    const t = setTimeout(() => setIndex((i) => (i + 1) % HERO_SLIDES.length), AUTOPLAY_MS)
+    return () => clearTimeout(t)
+  }, [index, paused, reducedMotion])
+  // Warm the cache so the swap does not flash.
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 768px)').matches
+    HERO_SLIDES.forEach((s) => {
+      const img = new Image()
+      img.src = desktop ? s.image : s.image.replace('-800', '-400')
+    })
+  }, [])
+
+  const live = paused || reducedMotion ? 'polite' : 'off'
+
   return (
-    <section aria-roledescription="carrossel" aria-label="Destaques" className="container-page">
-      {/* Desktop */}
-      <div className="hidden items-center gap-10 pb-24 pt-8 md:grid md:grid-cols-[1fr_450px]">
-        <div className="relative px-10">
-          <p className="mb-4 text-sm">{slide.kicker}</p>
-          <h1 className="text-4xl font-bold leading-[1.6] lg:text-[44px]">
+    <section
+      aria-roledescription="carrossel"
+      aria-label="Destaques"
+      className="container-page"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+    >
+      {/* Desktop: fixed heights keep title, button and dots in place between slides. */}
+      <div className="hidden items-center gap-10 pb-24 pt-8 md:grid md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_400px] xl:grid-cols-[1fr_450px]">
+        <div className="relative px-6 lg:px-10" aria-live={live}>
+          <p className="mb-4 h-5 text-sm">{slide.kicker}</p>
+          <h1 className="whitespace-nowrap text-xl font-bold leading-[1.6] lg:text-3xl xl:text-[44px]">
             {slide.title[0]}
             <br />
             {slide.title[1]}
           </h1>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-muted">{slide.text}</p>
+          <p className="mt-2 h-[72px] max-w-xl overflow-hidden text-sm leading-6 text-muted">{slide.text}</p>
           <Button asChild className="mt-8 h-10 w-[140px] text-base">
             <a href="#catalogo">EXPLORAR</a>
           </Button>
@@ -65,15 +107,15 @@ function Hero() {
       </div>
       {/* Mobile card */}
       <div className="relative mt-4 overflow-hidden rounded-[20px] bg-gradient-to-br from-[#8a5a30] to-surface p-4 md:hidden">
-        <div className="grid grid-cols-[1fr_140px] items-center gap-2">
-          <div>
-            <p className="text-[11px]">{slide.kicker}</p>
+        <div className="grid grid-cols-[1fr_140px] items-start gap-2">
+          <div aria-live={live}>
+            <p className="h-4 text-[11px]">{slide.kicker}</p>
             <h1 className="mt-2 text-base font-bold leading-7">
               {slide.title[0]}
               <br />
               {slide.title[1]}
             </h1>
-            <p className="mt-1 line-clamp-3 text-[11px] leading-4 text-cream/80">{slide.text}</p>
+            <p className="mt-1 line-clamp-3 h-12 text-[11px] leading-4 text-cream/80">{slide.text}</p>
             <a href="#catalogo" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-accent-strong">
               EXPLORAR <ArrowRight className="size-3" aria-hidden="true" />
             </a>

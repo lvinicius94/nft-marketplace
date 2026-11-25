@@ -53,7 +53,7 @@ function Gallery({ nft }: { nft: NftDetail }) {
           </li>
         ))}
       </ul>
-      <div className={cn('relative order-1 rounded p-5 md:order-2', TIER[nft.rarity].frame)} data-tier={nft.rarity}>
+      <div className="relative order-1 rounded bg-surface p-5 md:order-2" data-tier={nft.rarity}>
         <img src={image} alt={`Arte do NFT ${nft.name}, imagem ${active + 1}`} width={404} height={404} fetchPriority="high" className="aspect-square w-full rounded-[20px] object-cover" />
         <button type="button" onClick={() => setZoom(true)} className="absolute right-2 top-2 grid size-9 place-items-center rounded-full bg-ink/70" aria-label="Ampliar imagem">
           <ZoomIn className="size-5" aria-hidden="true" />
@@ -293,7 +293,7 @@ export function NftDetailPage() {
             <div className="flex items-center gap-1">
               <dt>Raridade:</dt>
               <dd>
-                <span className={cn('rounded px-2 py-0.5 text-xs font-semibold uppercase', TIER[nft.rarity].badge ?? 'border border-line text-cream')}>{TIER[nft.rarity].label}</span>
+                <span className={cn('rounded-md px-2 py-0.5 text-xs font-semibold uppercase', TIER[nft.rarity].badge ?? 'border border-line text-cream')}>{TIER[nft.rarity].label}</span>
               </dd>
             </div>
             <div className="flex gap-1">

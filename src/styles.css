@@ -51,6 +51,7 @@
     background-color: var(--color-surface);
     color: var(--color-cream);
   }
+
 }
 
 @layer components {
@@ -69,4 +70,48 @@
 @media (prefers-reduced-motion: reduce) {
   .skeleton { animation: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+/* Unlayered on purpose: must win over the `appearance-none` utility on the field. */
+  /*
+ * Customizable <select> (Chromium 135+): same native, accessible <select>, but the popup and
+ * the hover/focus highlight use the site palette instead of the OS blue. Other browsers keep
+ * the native list with the dark option colors above.
+ */
+@supports (appearance: base-select) {
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+  select::picker-icon {
+    display: none; /* our own chevron is rendered next to the field */
+  }
+  ::picker(select) {
+    margin-top: 4px;
+    padding: 4px;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-cream);
+    box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+  }
+  select option {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+  select option::checkmark {
+    color: var(--color-accent-strong);
+  }
+  select option:hover,
+  select option:focus-visible {
+    background: var(--color-surface-2);
+    color: var(--color-accent-strong);
+    outline: none;
+  }
+  select option:checked {
+    color: var(--color-accent-strong);
+    font-weight: 600;
+  }
 }

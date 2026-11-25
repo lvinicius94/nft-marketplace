@@ -58,8 +58,8 @@ export function NftCard({ nft, priority = false, compact = false }: { nft: NftSu
   const soldOut = nft.available === 0
   return (
     <article className="group relative" aria-label={nft.name} data-testid="nft-card">
-      <div className={cn('relative overflow-hidden p-1.5', tier.frame)} data-tier={nft.rarity}>
-        {tier.badge && <span className={cn('absolute left-0 top-1 z-10 px-3 py-0.5 text-xs font-semibold uppercase', tier.badge)}>{tier.label}</span>}
+      <div className="relative overflow-hidden bg-surface p-1" data-tier={nft.rarity}>
+        {tier.badge && <span className={cn('absolute left-2 top-2 z-10 rounded-md px-2.5 py-0.5 text-xs font-semibold uppercase shadow', tier.badge)}>{tier.label}</span>}
         <img
           src={nft.image}
           alt={`Arte do NFT ${nft.name}`}
