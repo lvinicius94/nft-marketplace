@@ -2,7 +2,7 @@
 
 Solução do [Desafio Frontend — Marketplace de NFTs](https://github.com/junglegaming/frontend-challenge): descoberta, compra e conta do colecionador, em desktop e mobile, seguindo o layout do Figma. Toda a API (REST e Socket.IO) é simulada com **MSW**, tanto em desenvolvimento quanto na demonstração publicada e nos testes.
 
-- **Demo:** _URL pública da Vercel_ (os mocks e o tempo real funcionam no ambiente publicado)
+- **Demo:** https://nft-marketplace-red-rho.vercel.app (os mocks e o tempo real funcionam no ambiente publicado)
 - **Arquitetura, contratos e decisões:** [`ARCHITECTURE.md`](./ARCHITECTURE.md)
 - **Auditoria Lighthouse:** [`lighthouse/summary.md`](./lighthouse/summary.md) (relatórios HTML/JSON em `lighthouse/reports`)
 
