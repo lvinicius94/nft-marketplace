@@ -83,6 +83,9 @@
   ::picker(select) {
     appearance: base-select;
   }
+  select {
+    align-items: center; /* keeps the chosen value on the label baseline */
+  }
   select::picker-icon {
     display: none; /* our own chevron is rendered next to the field */
   }

@@ -58,7 +58,6 @@ function Hero() {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
   const reducedMotion = usePrefersReducedMotion()
-  const slide = HERO_SLIDES[index]
 
   // Auto-advance every 2s; a manual choice restarts the timer. Pauses on hover/focus and
   // never moves for users who prefer reduced motion (WCAG 2.2.2).
@@ -67,16 +66,17 @@ function Hero() {
     const t = setTimeout(() => setIndex((i) => (i + 1) % HERO_SLIDES.length), AUTOPLAY_MS)
     return () => clearTimeout(t)
   }, [index, paused, reducedMotion])
-  // Warm the cache so the swap does not flash.
-  useEffect(() => {
-    const desktop = window.matchMedia('(min-width: 768px)').matches
-    HERO_SLIDES.forEach((s) => {
-      const img = new Image()
-      img.src = desktop ? s.image : s.image.replace('-800', '-400')
-    })
-  }, [])
 
   const live = paused || reducedMotion ? 'polite' : 'off'
+  // All slides are stacked in the same grid cell and cross-fade: no layout shift between
+  // slides (the cell is as tall as the tallest slide) and a smooth transition.
+  const fade = (i: number) =>
+    cn(
+      '[grid-area:1/1] transition-[opacity,transform] duration-700 ease-out',
+      i === index ? 'opacity-100 translate-y-0' : 'pointer-events-none opacity-0 translate-y-2',
+    )
+  const imgFade = (i: number) =>
+    cn('[grid-area:1/1] transition-[opacity,transform] duration-700 ease-out', i === index ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]')
 
   return (
     <section
@@ -88,39 +88,93 @@ function Hero() {
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      {/* Desktop: fixed heights keep title, button and dots in place between slides. */}
+      {/* Desktop */}
       <div className="hidden items-center gap-10 pb-24 pt-8 md:grid md:grid-cols-[1fr_300px] lg:grid-cols-[1fr_400px] xl:grid-cols-[1fr_450px]">
-        <div className="relative px-6 lg:px-10" aria-live={live}>
-          <p className="mb-4 h-5 text-sm">{slide.kicker}</p>
-          <h1 className="whitespace-nowrap text-xl font-bold leading-[1.6] lg:text-3xl xl:text-[44px]">
-            {slide.title[0]}
-            <br />
-            {slide.title[1]}
-          </h1>
-          <p className="mt-2 h-[72px] max-w-xl overflow-hidden text-sm leading-6 text-muted">{slide.text}</p>
+        <div className="relative px-6 lg:px-10">
+          <div className="grid" aria-live={live}>
+            {HERO_SLIDES.map((sl, i) => (
+              <div key={sl.kicker} className={fade(i)} aria-hidden={i !== index} inert={i !== index}>
+                <p className="mb-4 h-5 text-sm">{sl.kicker}</p>
+                {i === index ? (
+                  <h1 className="whitespace-nowrap text-xl font-bold leading-[1.6] lg:text-3xl xl:text-[44px]">
+                    {sl.title[0]}
+                    <br />
+                    {sl.title[1]}
+                  </h1>
+                ) : (
+                  <p className="whitespace-nowrap text-xl font-bold leading-[1.6] lg:text-3xl xl:text-[44px]">
+                    {sl.title[0]}
+                    <br />
+                    {sl.title[1]}
+                  </p>
+                )}
+                <p className="mt-2 max-w-xl text-sm leading-6 text-muted">{sl.text}</p>
+              </div>
+            ))}
+          </div>
           <Button asChild className="mt-8 h-10 w-[140px] text-base">
             <a href="#catalogo">EXPLORAR</a>
           </Button>
           <HeroDots index={index} onChange={setIndex} className="mt-12 justify-end" />
         </div>
-        <img src={slide.image} alt={slide.alt} width={450} height={450} fetchPriority="high" className="aspect-square w-full rounded-[20px] object-cover" />
+        <div className="grid overflow-hidden rounded-[20px]">
+          {HERO_SLIDES.map((sl, i) => (
+            <img
+              key={sl.image}
+              src={sl.image}
+              alt={i === index ? sl.alt : ''}
+              aria-hidden={i !== index}
+              width={450}
+              height={450}
+              fetchPriority={i === 0 ? 'high' : 'low'}
+              className={cn('aspect-square w-full rounded-[20px] object-cover', imgFade(i))}
+            />
+          ))}
+        </div>
       </div>
       {/* Mobile card */}
-      <div className="relative mt-4 overflow-hidden rounded-[20px] bg-gradient-to-br from-[#8a5a30] to-surface p-4 md:hidden">
+      <div className="relative mb-6 mt-4 overflow-hidden rounded-[20px] bg-gradient-to-br from-[#8a5a30] to-surface p-4 md:hidden">
         <div className="grid grid-cols-[1fr_140px] items-start gap-2">
-          <div aria-live={live}>
-            <p className="h-4 text-[11px]">{slide.kicker}</p>
-            <h1 className="mt-2 text-base font-bold leading-7">
-              {slide.title[0]}
-              <br />
-              {slide.title[1]}
-            </h1>
-            <p className="mt-1 line-clamp-3 h-12 text-[11px] leading-4 text-cream/80">{slide.text}</p>
+          <div>
+            <div className="grid" aria-live={live}>
+              {HERO_SLIDES.map((sl, i) => (
+                <div key={sl.kicker} className={fade(i)} aria-hidden={i !== index} inert={i !== index}>
+                  <p className="h-4 text-[11px]">{sl.kicker}</p>
+                  {i === index ? (
+                    <h1 className="mt-2 text-base font-bold leading-7">
+                      {sl.title[0]}
+                      <br />
+                      {sl.title[1]}
+                    </h1>
+                  ) : (
+                    <p className="mt-2 text-base font-bold leading-7">
+                      {sl.title[0]}
+                      <br />
+                      {sl.title[1]}
+                    </p>
+                  )}
+                  <p className="mt-1 line-clamp-3 text-[11px] leading-4 text-cream/80">{sl.text}</p>
+                </div>
+              ))}
+            </div>
             <a href="#catalogo" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-accent-strong">
               EXPLORAR <ArrowRight className="size-3" aria-hidden="true" />
             </a>
           </div>
-          <img src={slide.image.replace('-800', '-400')} alt={slide.alt} width={140} height={140} fetchPriority="high" className="aspect-square w-full rounded-xl object-cover" />
+          <div className="grid overflow-hidden rounded-xl">
+            {HERO_SLIDES.map((sl, i) => (
+              <img
+                key={sl.image}
+                src={sl.image.replace('-800', '-400')}
+                alt={i === index ? sl.alt : ''}
+                aria-hidden={i !== index}
+                width={140}
+                height={140}
+                fetchPriority={i === 0 ? 'high' : 'low'}
+                className={cn('aspect-square w-full rounded-xl object-cover', imgFade(i))}
+              />
+            ))}
+          </div>
         </div>
         <HeroDots index={index} onChange={setIndex} className="mt-3 justify-center" />
       </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
-import { Heart, Home, LogIn, Search, ShoppingCart, User, ScanLine } from 'lucide-react'
+import { BellRing, Heart, Home, LogIn, Search, ShoppingCart, User, ScanLine, ShieldCheck, Sparkles } from 'lucide-react'
+import { FacebookIcon, InstagramIcon, LinkedinIcon, XIcon, YoutubeIcon } from './brand-icons'
 import { toast } from 'sonner'
 import { useCart } from '@/api/queries'
 import { useSession } from '@/auth/session-store'
@@ -147,11 +148,17 @@ export function MobileNav() {
 }
 
 export function Footer() {
-  const social = ['Facebook', 'Instagram', 'Twitter', 'LinkedIn', 'YouTube']
+  const social = [
+    { name: 'Facebook', Icon: FacebookIcon },
+    { name: 'Instagram', Icon: InstagramIcon },
+    { name: 'X (Twitter)', Icon: XIcon },
+    { name: 'LinkedIn', Icon: LinkedinIcon },
+    { name: 'YouTube', Icon: YoutubeIcon },
+  ]
   const features = [
-    { letter: 'W', title: 'Segurança da carteira', text: 'Proteja sua carteira e colecione arte digital verificada com confiança.' },
-    { letter: 'C', title: 'Criadores em destaque', text: 'Conheça artistas, estúdios e comunidades que moldam a cultura digital na rede.' },
-    { letter: 'D', title: 'Alertas de lançamentos', text: 'Receba calendários de cunhagem, novidades de listas de acesso e análises do mercado.' },
+    { Icon: ShieldCheck, title: 'Segurança da carteira', text: 'Proteja sua carteira e colecione arte digital verificada com confiança.' },
+    { Icon: Sparkles, title: 'Criadores em destaque', text: 'Conheça artistas, estúdios e comunidades que moldam a cultura digital na rede.' },
+    { Icon: BellRing, title: 'Alertas de lançamentos', text: 'Receba calendários de cunhagem, novidades de listas de acesso e análises do mercado.' },
   ]
   const columns: [string, string[]][] = [
     ['Meu perfil', ['Meu perfil', 'Minha coleção', 'Atividade', 'Estúdio do criador', 'Lista de interesse']],
@@ -162,9 +169,9 @@ export function Footer() {
     <footer className="container-page mb-24 mt-24 md:mb-6">
       <section aria-label="Destaques" className="grid gap-8 bg-surface px-6 py-8 md:grid-cols-[1fr_1fr_1fr_1.3fr] md:px-12">
         {features.map((f) => (
-          <div key={f.letter} className="md:border-r md:border-accent md:pr-6">
+          <div key={f.title} className="md:border-r md:border-accent md:pr-6">
             <div aria-hidden="true" className="mb-4 grid size-[74px] place-items-center rounded-full bg-accent text-2xl font-bold text-ink">
-              {f.letter}
+              <f.Icon className="size-8" strokeWidth={1.75} />
             </div>
             <h2 className="mb-2 text-base font-bold md:text-lg">{f.title}</h2>
             <p className="text-sm leading-6 text-muted">{f.text}</p>
@@ -215,9 +222,9 @@ export function Footer() {
           <h2 className="mb-3 text-lg font-bold">Redes sociais</h2>
           <ul className="mb-6 flex gap-2">
             {social.map((s) => (
-              <li key={s}>
-                <a href="#" onClick={(e) => (e.preventDefault(), comingSoon(s)())} aria-label={`${s} (indisponível na demonstração)`} className="grid size-8 place-items-center rounded border border-accent text-xs text-accent-strong">
-                  {s[0]}
+              <li key={s.name}>
+                <a href="#" onClick={(e) => (e.preventDefault(), comingSoon(s.name)())} aria-label={`${s.name} (indisponível na demonstração)`} className="grid size-8 place-items-center rounded-md border border-accent text-accent-strong transition-colors hover:bg-accent hover:text-ink">
+                  <s.Icon className="size-4" />
                 </a>
               </li>
             ))}
@@ -228,9 +235,9 @@ export function Footer() {
       </div>
       <p className="py-4 text-center text-xs text-muted">
         © 2026 Kurio. Projeto de demonstração com dados simulados. Made by{' '}
-        <a href="https://github.com/lvinicius94" target="_blank" rel="noreferrer" className="font-semibold text-accent-strong hover:underline">
+        <a href="https://www.linkedin.com/in/lucascamargo-growth" target="_blank" rel="noreferrer" className="font-semibold text-accent-strong hover:underline">
           Lucas Camargo
-          <span className="sr-only"> (GitHub, abre em nova aba)</span>
+          <span className="sr-only"> (LinkedIn, abre em nova aba)</span>
         </a>
       </p>
     </footer>

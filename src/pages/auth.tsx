@@ -7,6 +7,7 @@ import { api } from '@/api/endpoints'
 import { sessionStore, useSession } from '@/auth/session-store'
 import { Field, PasswordInput } from '@/components/form-field'
 import { comingSoon } from '@/components/layout'
+import { FacebookIcon, GoogleIcon } from '@/components/brand-icons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/primitives'
@@ -24,10 +25,10 @@ function SocialButtons() {
     <div className="grid gap-3">
       <div className="flex items-center gap-3 text-xs text-cream before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">Ou continue com</div>
       <Button type="button" variant="ghost" className="border border-line text-xs" onClick={comingSoon('O login com Google')}>
-        <span aria-hidden="true" className="font-bold text-[#4285f4]">G</span> Continuar com Google
+        <GoogleIcon /> Continuar com Google
       </Button>
       <Button type="button" variant="ghost" className="border border-line text-xs" onClick={comingSoon('O login com Facebook')}>
-        <span aria-hidden="true" className="font-bold text-[#1877f2]">f</span> Continuar com Facebook
+        <FacebookIcon className="text-[#1877f2]" /> Continuar com Facebook
       </Button>
     </div>
   )

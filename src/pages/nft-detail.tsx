@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogTitle, Skeleton, Tabs, TabsContent, TabsLi
 import { announce } from '@/lib/announcer'
 import { eth, NETWORK_LABEL } from '@/lib/format'
 import { cn } from '@/lib/utils'
+import { LinkedinIcon, XIcon } from '@/components/brand-icons'
 import { TIER } from '@/lib/tiers'
 import { NotFound } from './not-found'
 
@@ -304,13 +305,13 @@ export function NftDetailPage() {
           <div className="flex items-center gap-3 text-sm font-semibold">
             <span>Compartilhar este NFT:</span>
             <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(share)}`} target="_blank" rel="noreferrer" aria-label="Compartilhar no LinkedIn (abre em nova aba)" className="hover:text-accent-strong">
-              in
+              <LinkedinIcon className="size-4" />
             </a>
             <a href={`mailto:?subject=${encodeURIComponent(nft.name)}&body=${encodeURIComponent(share)}`} aria-label="Compartilhar por e-mail" className="hover:text-accent-strong">
               <Mail className="size-4" aria-hidden="true" />
             </a>
             <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(share)}`} target="_blank" rel="noreferrer" aria-label="Compartilhar no X/Twitter (abre em nova aba)" className="hover:text-accent-strong">
-              X
+              <XIcon className="size-4" />
             </a>
           </div>
         </div>

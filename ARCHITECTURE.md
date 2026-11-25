@@ -139,7 +139,7 @@ O LCP mobile de cerca de 3,1 s vem principalmente da exigência de os mocks esta
 
 ## Decisões de UX e desvios do Figma
 
-- **Assets:** o arquivo do Figma é somente leitura. As 4 ilustrações foram recortadas do export 3x do frame "Desktop / Início" e salvas em WebP (`public/nfts`); os frames exportados estão em `design/frames` como referência. O ícone do recibo ("THANK YOU") foi trocado pelo `MailOpen` do Lucide, e os ícones sociais, por iniciais.
+- **Assets:** o arquivo do Figma é somente leitura. As 4 ilustrações foram recortadas do export 3x do frame "Desktop / Início" e salvas em WebP (`public/nfts`); os frames exportados estão em `design/frames` como referência. O ícone do recibo ("THANK YOU") foi trocado pelo `MailOpen` do Lucide. Os destaques do rodapé usam `ShieldCheck`, `Sparkles` e `BellRing`; os ícones de redes sociais, Google e compartilhamento foram desenhados no mesmo traço da Lucide (`src/components/brand-icons.tsx`), porque a Lucide 1.x não traz ícones de marca.
 - **Fonte:** Roboto Mono (variável, local), a mais próxima da tipografia monoespaçada do layout.
 - **Cores:** amostradas dos PNGs exportados (tokens em `src/styles.css`).
 - **Login e cadastro:** no desktop são diálogos sobre a home, como no layout; no mobile, telas cheias, como nos frames mobile.
@@ -148,7 +148,7 @@ O LCP mobile de cerca de 3,1 s vem principalmente da exigência de os mocks esta
 - **Carteiras:** o formulário segue todos os campos do frame. "Igual à carteira principal" copia os dados da principal para a secundária, alterando o endereço para não duplicar.
 - **Fora do escopo:** Criadores, Aprenda, Ofertas, Arquivos baixados, Suporte, newsletter, login social e recuperação de senha mostram um aviso "não faz parte desta demonstração", sem simular sucesso.
 - **"Atividade" e "Lista de interesse"** do perfil foram implementadas como histórico de pedidos e favoritos.
-- **Carrossel do hero:** troca sozinho a cada 2 s, pausa com mouse ou foco dentro dele e fica parado com `prefers-reduced-motion` (WCAG 2.2.2). Título, botão e indicadores têm posição fixa entre os slides. Os testes rodam com movimento reduzido para serem determinísticos.
+- **Carrossel do hero:** slides empilhados na mesma célula do grid com transição de opacidade e leve deslize (700 ms), sem variação de altura; troca sozinho a cada 2 s, pausa com mouse ou foco dentro dele e fica parado com `prefers-reduced-motion` (WCAG 2.2.2). Título, botão e indicadores têm posição fixa entre os slides. Os testes rodam com movimento reduzido para serem determinísticos.
 - **Tiers de raridade (extra):** Comum, Raro, Épico e Lendário. Cada tier tem um selo com gradiente e cantos arredondados no card e no detalhe; o texto do selo garante leitura sem depender de cor.
 - **`<select>` customizável:** nos navegadores Chromium com `appearance: base-select`, a lista usa a paleta do site (sem o azul do sistema operacional). Nos demais, a lista nativa usa as cores escuras.
 - **Faixa de preço:** valores em ETH com 2 casas e botão "Aplicar"; os limites vêm da API.

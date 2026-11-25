@@ -56,7 +56,7 @@ export function MockPanel() {
               ))}
             </NativeSelect>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-wrap gap-2 sm:grid sm:grid-cols-2 [&>button]:grow [&>button]:basis-auto sm:[&>button]:basis-0">
             <Button
               variant="outline"
               size="sm"
