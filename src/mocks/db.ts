@@ -282,7 +282,7 @@ export function sessionFromToken(token: string | null): { status: 'ok'; user: Us
 }
 
 function createSession(userId: string) {
-  const session: SessionRecord = { token: `tok_${fakeHex(32, mockId('s'))}`, userId, expiresAt: now() + scenario.get().sessionTtlMs }
+  const session: SessionRecord = { token: `tok_${crypto.randomUUID().replace(/-/g, '')}`, userId, expiresAt: now() + scenario.get().sessionTtlMs }
   state.sessions.push(session)
   save()
   const user = state.users.find((u) => u.id === userId)!

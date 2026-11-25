@@ -24,14 +24,16 @@ export function Field({ id, label, srLabel, required, error, hint, className, ch
   return (
     <div className={cn('grid gap-2', className)}>
       {label && (
-        <Label htmlFor={id} className={cn(srLabel && 'sr-only')}>
-          {label}
+        // The asterisk sits outside <label> so it does not pollute the accessible name;
+        // `required` on the control is what assistive tech announces.
+        <div className={cn('flex', srLabel && 'sr-only')}>
+          <Label htmlFor={id}>{label}</Label>
           {required && (
             <span aria-hidden="true" className="ml-0.5 text-accent-strong">
               *
             </span>
           )}
-        </Label>
+        </div>
       )}
       {children({ id, 'aria-invalid': !!error, 'aria-describedby': describedBy, required })}
       {hint && !error && (

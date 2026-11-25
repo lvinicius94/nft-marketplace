@@ -347,7 +347,7 @@ function Catalog() {
             </div>
           </div>
 
-          {hasAnyFilter && data && (
+          {hasAnyFilter && data && !list.isPlaceholderData && (
             <p className="mt-3 text-sm text-muted" role="status">
               {data.total} {data.total === 1 ? 'resultado' : 'resultados'}
               {search.q && <> para “{search.q}”</>}

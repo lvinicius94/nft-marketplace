@@ -94,10 +94,16 @@ export function useToggleFavorite() {
       return { previous, key }
     },
     onError: (_error, _vars, context) => {
-      if (context) qc.setQueryData(context.key, context.previous)
+      if (!context) return
+      // Roll back to the snapshot; if the list was not loaded yet, drop the optimistic guess.
+      if (context.previous) qc.setQueryData(context.key, context.previous)
+      else qc.removeQueries({ queryKey: context.key, exact: true })
     },
     onSuccess: (data, _vars, context) => {
       if (context) qc.setQueryData(context.key, data)
+    },
+    onSettled: (_d, _e, _v, context) => {
+      if (context) qc.invalidateQueries({ queryKey: context.key })
     },
   })
 }

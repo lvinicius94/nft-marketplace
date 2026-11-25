@@ -18,11 +18,14 @@ export function mockId(prefix: string): string {
 }
 
 export function fakeHex(length: number, seed: string): string {
-  let h = 2166136261
+  // FNV-1a over the whole seed, once per 8-hex block (block index mixed in).
   let out = ''
-  for (let i = 0; out.length < length; i++) {
-    h ^= seed.charCodeAt(i % seed.length) + i
-    h = Math.imul(h, 16777619) >>> 0
+  for (let block = 0; out.length < length; block++) {
+    let h = (2166136261 ^ block) >>> 0
+    for (let i = 0; i < seed.length; i++) {
+      h ^= seed.charCodeAt(i)
+      h = Math.imul(h, 16777619) >>> 0
+    }
     out += h.toString(16).padStart(8, '0')
   }
   return out.slice(0, length)

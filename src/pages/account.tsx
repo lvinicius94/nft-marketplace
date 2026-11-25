@@ -49,7 +49,7 @@ export function AccountLayout() {
   ]
   return (
     <div className="container-page grid gap-6 pt-6 md:grid-cols-[248px_1fr] md:gap-6">
-      <nav aria-label="Meu perfil" className="h-fit bg-surface py-4">
+      <nav aria-label="Meu perfil" className="h-fit min-w-0 bg-surface py-4">
         <h1 className="mb-2 px-2 text-lg font-bold">Meu perfil</h1>
         <ul className="flex overflow-x-auto md:grid">
           {items.map((it) => {

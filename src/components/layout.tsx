@@ -7,7 +7,7 @@ import { useSession } from '@/auth/session-store'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { Dialog, DialogContent, DialogTitle } from './ui/primitives'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/primitives'
 
 export const comingSoon = (what: string) => () =>
   toast.info(`${what} não faz parte desta demonstração.`, { description: 'Esta área está fora do escopo do desafio.' })
@@ -32,6 +32,11 @@ function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v:
   const [value, setValue] = useState('')
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <button type="button" className="rounded p-1.5 hover:bg-surface" aria-label="Buscar">
+          <Search className="size-6" aria-hidden="true" />
+        </button>
+      </DialogTrigger>
       <DialogContent className="p-6">
         <DialogTitle className="mb-4">Buscar NFTs</DialogTitle>
         <form
@@ -85,9 +90,7 @@ export function Header() {
           </button>
         </nav>
         <div className="flex items-center gap-4">
-          <button type="button" className="rounded p-1.5 hover:bg-surface" aria-label="Buscar" onClick={() => setSearchOpen(true)}>
-            <Search className="size-6" aria-hidden="true" />
-          </button>
+          <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
           <CartBadge />
           {user ? (
             <Link to="/perfil" className="flex items-center gap-2 rounded-[4px] bg-accent px-3 py-1.5 text-sm font-semibold text-ink hover:bg-accent-strong">
@@ -102,7 +105,6 @@ export function Header() {
           )}
         </div>
       </div>
-      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   )
 }
@@ -178,7 +180,7 @@ export function Footer() {
           <h2 className="text-base font-bold leading-4 md:text-lg md:leading-4">Antecipe-se ao próximo lançamento</h2>
           <div className="flex">
             <label htmlFor="newsletter" className="sr-only">
-              Seu e-mail
+              Endereço para a newsletter
             </label>
             <input id="newsletter" type="email" placeholder="digite seu e-mail..." className="h-10 min-w-0 flex-1 rounded-l-[4px] bg-surface-2 px-3 text-sm placeholder:text-muted focus-visible:outline-accent-strong" />
             <button type="submit" className="rounded-r-[4px] bg-accent px-4 text-base font-bold text-ink hover:bg-accent-strong">

@@ -44,9 +44,11 @@ http.interceptors.response.use(
     const { status, data } = error.response
     const body = data?.error
     const apiError = new ApiError(status, body?.code ?? 'UNKNOWN', body?.message ?? 'Erro inesperado.', body?.fields ?? {}, body?.details)
-    // Any 401 on an authenticated request means the session is no longer valid.
-    const sentToken = Boolean(error.config?.headers?.Authorization)
-    if (status === 401 && sentToken && (apiError.code === 'SESSION_EXPIRED' || apiError.code === 'UNAUTHENTICATED')) {
+    // A 401 on an authenticated request means *that* session is no longer valid. A late 401 for an
+    // older token (sent before a new login) must not sign out the newer session.
+    const sentAuth = String(error.config?.headers?.Authorization ?? '')
+    const current = sessionStore.get().token
+    if (status === 401 && current && sentAuth === `Bearer ${current}` && (apiError.code === 'SESSION_EXPIRED' || apiError.code === 'UNAUTHENTICATED')) {
       sessionStore.signOut('expired')
     }
     return Promise.reject(apiError)
