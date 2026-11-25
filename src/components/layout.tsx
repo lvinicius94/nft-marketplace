@@ -200,8 +200,11 @@ export function Footer() {
       <div className="grid gap-3 bg-surface-2 px-6 py-6 text-sm md:grid-cols-4 md:items-center md:px-8">
         <span className="font-bold tracking-wider">KURIO</span>
         <span>Feito para colecionadores, criadores e cultura</span>
-        <a href="mailto:contato@email.com" className="hover:text-accent-strong">contato@email.com</a>
-        <a href="tel:+551140028922" className="hover:text-accent-strong">+55 11 4002 8922</a>
+        <a href="mailto:lvinicius94@hotmail.com" className="break-all hover:text-accent-strong">lvinicius94@hotmail.com</a>
+        <a href="https://wa.me/5511942533857" target="_blank" rel="noreferrer" className="hover:text-accent-strong">
+          +55 11 94253-3857
+          <span className="sr-only"> (WhatsApp, abre em nova aba)</span>
+        </a>
       </div>
       <div className="grid gap-8 bg-surface px-6 py-8 sm:grid-cols-2 md:grid-cols-4 md:px-8">
         {columns.map(([title, links]) => (

@@ -162,7 +162,7 @@ function Hero() {
                       {sl.title[1]}
                     </p>
                   )}
-                  <p className="mt-1 line-clamp-3 text-[11px] leading-4 text-cream/80">{highlightCoupon(sl.text)}</p>
+                  <p className="mt-1 text-[11px] leading-4 text-cream/80">{highlightCoupon(sl.text)}</p>
                 </div>
               ))}
             </div>
