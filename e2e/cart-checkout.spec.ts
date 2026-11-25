@@ -37,6 +37,15 @@ test.describe('Carrinho', () => {
     await expect(page.getByTestId('cart-row')).toContainText('Emerald Ape #042')
   })
 
+  test('cupom LucasCamargo aplica 15% (sem diferenciar maiúsculas)', async ({ page }) => {
+    await addToCart(page, 'nft-001') // 1.19 ETH
+    await page.getByLabel('Código promocional').fill('LucasCamargo')
+    await page.getByRole('button', { name: 'Aplicar' }).click()
+    await expect(page.getByTestId('coupon-applied')).toContainText('LUCASCAMARGO')
+    await expect(page.getByTestId('summary-discount')).toHaveText('(-) 0.1785 ETH')
+    await expect(page.getByTestId('summary-total')).toHaveText('1.0275 ETH')
+  })
+
   test('valores em ETH mantêm precisão decimal', async ({ page }) => {
     await addToCart(page, 'nft-009', 3) // 0.39 * 3 = 1.17 (float would give 1.1700000000000002)
     await expect(page.getByTestId('summary-subtotal')).toHaveText('1.17 ETH')

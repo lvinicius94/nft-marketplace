@@ -508,6 +508,7 @@ export function mergeGuestCart(guestCartId: string | null, userId: string) {
 const COUPONS: Record<string, Coupon & { expired?: boolean }> = {
   GREEN10: { code: 'GREEN10', description: '10% de desconto', percentBps: 1000 },
   BEMVINDO5: { code: 'BEMVINDO5', description: '5% de desconto na primeira compra', percentBps: 500 },
+  LUCASCAMARGO: { code: 'LUCASCAMARGO', description: '15% de desconto do criador da demo', percentBps: 1500 },
   BLACK30: { code: 'BLACK30', description: '30% Black Friday (expirado)', percentBps: 3000, expired: true },
 }
 

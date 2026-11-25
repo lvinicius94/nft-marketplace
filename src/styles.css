@@ -37,6 +37,20 @@
     outline-offset: 2px;
   }
   ::selection { background: var(--color-accent); color: var(--color-ink); }
+  /* Everything that triggers an action shows the pointer (Tailwind v4 resets buttons to default). */
+  a[href], button, select, summary, label[for], [role='button'], [role='tab'], [role='radio'], [role='checkbox'], [role='slider'],
+  input[type='file'], input[type='checkbox'], input[type='radio'] {
+    cursor: pointer;
+  }
+  :is(button, select, input, [role='radio'], [role='checkbox']):disabled,
+  [aria-disabled='true'], [data-disabled] {
+    cursor: not-allowed;
+  }
+  /* Native dropdown options follow the dark theme (the sort select has a transparent field). */
+  select option, select optgroup {
+    background-color: var(--color-surface);
+    color: var(--color-cream);
+  }
 }
 
 @layer components {

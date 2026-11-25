@@ -8,9 +8,9 @@ import { useSession } from '@/auth/session-store'
 import { announce } from '@/lib/announcer'
 import { eth } from '@/lib/format'
 import { cn } from '@/lib/utils'
+import { TIER } from '@/lib/tiers'
 import { Skeleton } from './ui/primitives'
 
-const RARITY_BADGE: Partial<Record<NftSummary['rarity'], string>> = { raro: 'RARO', lendario: 'LENDÁRIO' }
 
 /** Favorite toggle with optimistic update + rollback (see useToggleFavorite). */
 export function FavoriteButton({ nft, className, withLabel }: { nft: Pick<NftSummary, 'id' | 'name'>; className?: string; withLabel?: boolean }) {
@@ -54,12 +54,12 @@ export function FavoriteButton({ nft, className, withLabel }: { nft: Pick<NftSum
 
 export function NftCard({ nft, priority = false, compact = false }: { nft: NftSummary; priority?: boolean; compact?: boolean }) {
   const add = useAddToCart()
-  const badge = RARITY_BADGE[nft.rarity]
+  const tier = TIER[nft.rarity]
   const soldOut = nft.available === 0
   return (
     <article className="group relative" aria-label={nft.name} data-testid="nft-card">
-      <div className="relative overflow-hidden bg-surface p-1">
-        {badge && <span className="absolute left-0 top-1 z-10 bg-accent px-3 py-0.5 text-xs font-semibold text-ink">{badge}</span>}
+      <div className={cn('relative overflow-hidden p-1.5', tier.frame)} data-tier={nft.rarity}>
+        {tier.badge && <span className={cn('absolute left-0 top-1 z-10 px-3 py-0.5 text-xs font-semibold uppercase', tier.badge)}>{tier.label}</span>}
         <img
           src={nft.image}
           alt={`Arte do NFT ${nft.name}`}

@@ -226,7 +226,13 @@ export function Footer() {
           <p className="inline-block rounded border border-line bg-surface-2 px-2 py-1 text-[10px] font-bold text-accent-strong">METAMASK · WALLETCONNECT · COINBASE</p>
         </div>
       </div>
-      <p className="py-4 text-center text-xs text-muted">© 2026 Kurio. Projeto de demonstração com dados simulados.</p>
+      <p className="py-4 text-center text-xs text-muted">
+        © 2026 Kurio. Projeto de demonstração com dados simulados. · Made by{' '}
+        <a href="https://github.com/lvinicius94" target="_blank" rel="noreferrer" className="font-semibold text-accent-strong hover:underline">
+          Lucas Camargo
+          <span className="sr-only"> (GitHub, abre em nova aba)</span>
+        </a>
+      </p>
     </footer>
   )
 }
