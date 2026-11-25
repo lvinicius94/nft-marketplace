@@ -1,0 +1,15 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+test-results
+playwright-report
+blob-report
+playwright/.cache
+.vercel
+design/hi
+design/frames/*.zip
+lighthouse/tmp

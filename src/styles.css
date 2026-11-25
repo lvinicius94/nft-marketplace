@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/roboto-mono/wght.css';
+
+/* Design tokens sampled from the Figma frames (see ARCHITECTURE.md). */
+@theme {
+  --font-mono: 'Roboto Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-sans: var(--font-mono);
+  --color-ink: #140d0a;
+  --color-surface: #241612;
+  --color-surface-2: #38220f;
+  --color-line: #432c1a;
+  --color-accent: #d28a4c;
+  --color-accent-strong: #e89b55;
+  --color-cream: #f5f1eb;
+  --color-muted: #cfb28c;
+  --color-strike: #b39463;
+  --color-danger: #ff8a7a;
+  --color-success: #8fd19e;
+  --radius-card: 12px;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  @keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+}
+
+@layer base {
+  html { color-scheme: dark; }
+  body {
+    @apply bg-ink text-cream font-mono antialiased;
+    min-height: 100dvh;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent-strong);
+    outline-offset: 2px;
+  }
+  ::selection { background: var(--color-accent); color: var(--color-ink); }
+}
+
+@layer components {
+  .skeleton {
+    background-color: var(--color-surface);
+    background-image: linear-gradient(90deg, transparent 0, rgb(255 255 255 / 0.06) 50%, transparent 100%);
+    background-size: 800px 100%;
+    background-repeat: no-repeat;
+    animation: var(--animate-shimmer);
+  }
+  .container-page {
+    @apply mx-auto w-full max-w-[1200px] px-4 md:px-6 xl:px-0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
